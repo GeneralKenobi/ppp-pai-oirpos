@@ -1,0 +1,307 @@
+openapi: 3.0.1
+info:
+  title: Unit Converter
+  description: This is a sample unit converter web server.
+  contact:
+    url: https://github.com/GeneralKenobi
+    email: szymzog050@student.polsl.pl
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: /v1
+tags:
+- name: unit
+  description: Metric and imperial units.
+- name: conversion
+  description: Convert between different unit systems.
+paths:
+  /status:
+    get:
+      summary: Gets server status
+      description: Check if server is up and healthy.
+      operationId: status
+      responses:
+        "200":
+          description: Server is up and running.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerStatus'
+        "500":
+          description: Server is up but it's not running.
+          content: {}
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /si/prefix:
+    get:
+      summary: Find the most matching SI prefix for a quantity
+      description: "Find a prefix with which the value can be presented in the range\
+        \ 1-999 with at most 3 decimal places, if possible. For example, 12345678\
+        \ X is presented as 12.346 MX."
+      operationId: si_prefix
+      parameters:
+      - name: value
+        in: query
+        description: Value to convert.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+      - name: unit
+        in: query
+        description: Optional unit to append to string representations of the converted
+          value.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Value adjusted to the selected prefix.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiPrefix'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /convert/length:
+    get:
+      summary: Converts a length value between systems or units
+      description: Convert a length value from one system or unit to another.
+      operationId: convert_length
+      parameters:
+      - name: value
+        in: query
+        description: Value to convert.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+      - name: fromUnit
+        in: query
+        description: The unit in which the value is represented.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - centimeter
+          - meter
+          - kilometer
+          - inch
+          - foot
+          - yard
+          - mile
+      - name: toUnit
+        in: query
+        description: The unit to convert to.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - centimeter
+          - meter
+          - kilometer
+          - inch
+          - foot
+          - yard
+          - mile
+      responses:
+        "200":
+          description: Conversion successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversionResult'
+        "400":
+          description: If any parameter is missing or invalid.
+          content: {}
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /convert/weight:
+    get:
+      summary: Converts a weight value between systems or units
+      description: Convert a weight value from one system or unit to another.
+      operationId: convert_weight
+      parameters:
+      - name: value
+        in: query
+        description: Value to convert.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+      - name: fromUnit
+        in: query
+        description: The unit in which value is represented.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - gram
+          - kilogram
+          - ton
+          - ounce
+          - pound
+      - name: toUnit
+        in: query
+        description: The unit to convert to.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - gram
+          - kilogram
+          - ton
+          - ounce
+          - pound
+      responses:
+        "200":
+          description: Conversion successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversionResult'
+        "400":
+          description: If any parameter is missing or invalid.
+          content: {}
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /convert/time:
+    get:
+      summary: Converts a time value between systems or units
+      description: Convert a time value from one system or unit to another.
+      operationId: convert_time
+      parameters:
+      - name: value
+        in: query
+        description: Value to convert.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+      - name: fromUnit
+        in: query
+        description: The unit in which value is represented.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - second
+          - minute
+          - hour
+          - day
+      - name: toUnit
+        in: query
+        description: The unit to convert to.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - second
+          - minute
+          - hour
+          - day
+      responses:
+        "200":
+          description: Conversion successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversionResult'
+        "400":
+          description: If any parameter is missing or invalid.
+          content: {}
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+components:
+  schemas:
+    ServerStatus:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: A few words describing the current status of the server
+          example: OK
+      example:
+        message: OK
+    SiPrefix:
+      required:
+      - formatted
+      - prefix
+      - value
+      type: object
+      properties:
+        value:
+          type: number
+          description: Value converted for representation with an SI prefix.
+          example: 12.346
+        formatted:
+          type: string
+          description: Value formatted with the prefix and optional unit.
+          example: 12.346 Gt
+        prefix:
+          $ref: '#/components/schemas/SiPrefix_prefix'
+      example:
+        formatted: 12.346 Gt
+        prefix:
+          symbol: G
+          name: giga
+          power: 9.0
+          word: billion
+        value: 12.346
+    ConversionResult:
+      required:
+      - value
+      type: object
+      properties:
+        value:
+          type: number
+          description: Converted value.
+          example: 12.346
+      example:
+        value: 12.346
+    SiPrefix_prefix:
+      required:
+      - power
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the prefix.
+          example: giga
+        symbol:
+          type: string
+          description: Symbol representing the prefix.
+          example: G
+        power:
+          type: number
+          description: The power of 10 which is represented by the prefix.
+          example: 9.0
+        word:
+          type: string
+          description: English word for the prefix.
+          example: billion
+      description: The used SI prefix.
+      example:
+        symbol: G
+        name: giga
+        power: 9.0
+        word: billion
+x-original-swagger-version: "2.0"
+

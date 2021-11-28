@@ -1,0 +1,341 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a sample unit converter web server.",
+    "version": "1.0.0",
+    "title": "Unit Converter",
+    "contact": {
+      "url": "https://github.com/GeneralKenobi",
+      "email": "szymzog050@student.polsl.pl"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "basePath": "/v1",
+  "tags": [
+    {
+      "name": "unit",
+      "description": "Metric and imperial units."
+    },
+    {
+      "name": "conversion",
+      "description": "Convert between different unit systems."
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/status": {
+      "get": {
+        "summary": "Gets server status",
+        "description": "Check if server is up and healthy.",
+        "operationId": "status",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Server is up and running.",
+            "schema": {
+              "$ref": "#/definitions/ServerStatus"
+            }
+          },
+          "500": {
+            "description": "Server is up but it's not running."
+          }
+        }
+      }
+    },
+    "/si/prefix": {
+      "get": {
+        "summary": "Find the most matching SI prefix for a quantity",
+        "description": "Find a prefix with which the value can be presented in the range 1-999 with at most 3 decimal places, if possible. For example, 12345678 X is presented as 12.346 MX.",
+        "operationId": "siPrefix",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "value",
+            "in": "query",
+            "description": "Value to convert.",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "unit",
+            "in": "query",
+            "description": "Optional unit to append to string representations of the converted value.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Value adjusted to the selected prefix.",
+            "schema": {
+              "$ref": "#/definitions/SiPrefix"
+            }
+          }
+        }
+      }
+    },
+    "/convert/length": {
+      "get": {
+        "summary": "Converts a length value between systems or units",
+        "description": "Convert a length value from one system or unit to another.",
+        "operationId": "convertLength",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "value",
+            "in": "query",
+            "description": "Value to convert.",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "fromUnit",
+            "in": "query",
+            "description": "The unit in which the value is represented.",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "centimeter",
+              "meter",
+              "kilometer",
+              "inch",
+              "foot",
+              "yard",
+              "mile"
+            ]
+          },
+          {
+            "name": "toUnit",
+            "in": "query",
+            "description": "The unit to convert to.",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "centimeter",
+              "meter",
+              "kilometer",
+              "inch",
+              "foot",
+              "yard",
+              "mile"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Conversion successful.",
+            "schema": {
+              "$ref": "#/definitions/ConversionResult"
+            }
+          },
+          "400": {
+            "description": "If any parameter is missing or invalid."
+          }
+        }
+      }
+    },
+    "/convert/weight": {
+      "get": {
+        "summary": "Converts a weight value between systems or units",
+        "description": "Convert a weight value from one system or unit to another.",
+        "operationId": "convertWeight",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "value",
+            "in": "query",
+            "description": "Value to convert.",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "fromUnit",
+            "in": "query",
+            "description": "The unit in which value is represented.",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "gram",
+              "kilogram",
+              "ton",
+              "ounce",
+              "pound"
+            ]
+          },
+          {
+            "name": "toUnit",
+            "in": "query",
+            "description": "The unit to convert to.",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "gram",
+              "kilogram",
+              "ton",
+              "ounce",
+              "pound"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Conversion successful.",
+            "schema": {
+              "$ref": "#/definitions/ConversionResult"
+            }
+          },
+          "400": {
+            "description": "If any parameter is missing or invalid."
+          }
+        }
+      }
+    },
+    "/convert/time": {
+      "get": {
+        "summary": "Converts a time value between systems or units",
+        "description": "Convert a time value from one system or unit to another.",
+        "operationId": "convertTime",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "value",
+            "in": "query",
+            "description": "Value to convert.",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "fromUnit",
+            "in": "query",
+            "description": "The unit in which value is represented.",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "second",
+              "minute",
+              "hour",
+              "day"
+            ]
+          },
+          {
+            "name": "toUnit",
+            "in": "query",
+            "description": "The unit to convert to.",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "second",
+              "minute",
+              "hour",
+              "day"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Conversion successful.",
+            "schema": {
+              "$ref": "#/definitions/ConversionResult"
+            }
+          },
+          "400": {
+            "description": "If any parameter is missing or invalid."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ServerStatus": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "OK",
+          "description": "A few words describing the current status of the server"
+        }
+      }
+    },
+    "SiPrefix": {
+      "type": "object",
+      "required": [
+        "value",
+        "formatted",
+        "prefix"
+      ],
+      "properties": {
+        "value": {
+          "type": "number",
+          "description": "Value converted for representation with an SI prefix.",
+          "example": "12.346"
+        },
+        "formatted": {
+          "type": "string",
+          "description": "Value formatted with the prefix and optional unit.",
+          "example": "12.346 Gt"
+        },
+        "prefix": {
+          "type": "object",
+          "description": "The used SI prefix.",
+          "required": [
+            "power"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "The name of the prefix.",
+              "example": "giga"
+            },
+            "symbol": {
+              "type": "string",
+              "description": "Symbol representing the prefix.",
+              "example": "G"
+            },
+            "power": {
+              "type": "number",
+              "description": "The power of 10 which is represented by the prefix.",
+              "example": 9
+            },
+            "word": {
+              "type": "string",
+              "description": "English word for the prefix.",
+              "example": "billion"
+            }
+          }
+        }
+      }
+    },
+    "ConversionResult": {
+      "type": "object",
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "type": "number",
+          "description": "Converted value.",
+          "example": 12.346
+        }
+      }
+    }
+  }
+}
