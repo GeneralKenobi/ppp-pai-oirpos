@@ -1,0 +1,27 @@
+@import "~@angular/material/theming";
+@import 'src/variables.scss';
+
+.primary-theme {
+  color: #FFFFFF;
+  background-color: mat-color($primaryPalette);
+  opacity: 90%;
+}
+
+.accent-theme {
+  color: #FFFFFF;
+  background-color: mat-color($accentPalette);
+}
+
+.drawer-div {
+  padding-top: 20px;
+  padding-right: 10px;
+  padding-bottom: 40px;
+  padding-left: 10px;
+}
+
+.side-button {
+  display: block;
+  width: 140px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}

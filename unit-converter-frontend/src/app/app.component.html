@@ -1,0 +1,22 @@
+<div style="background-color: #EEEEEE;">
+  <div class="primary-theme" style="padding: 20px;">
+    <h1 style="margin: 0px;">Unit Converter</h1>
+  </div>
+  <mat-drawer-container style="height: 800px;">
+    <mat-drawer mode="side" opened class="accent-theme">
+      <div class="drawer-div">
+        <h2 style="text-align: center;">Menu</h2>
+        <a routerLink="/find-prefix"><button class="primary-theme side-button" mat-raised-button>Find Prefix</button></a>
+        <a routerLink="/convert-length"><button class="primary-theme side-button" mat-raised-button>Convert Length</button></a>
+        <a routerLink="/convert-weight"><button class="primary-theme side-button" mat-raised-button>Convert Weight</button></a>
+        <a routerLink="/convert-time"><button class="primary-theme side-button" mat-raised-button>Convert Time</button></a>
+        <a routerLink="/status"><button class="primary-theme side-button" mat-raised-button>Server Status</button></a>
+      </div>
+    </mat-drawer>
+    <mat-drawer-content style="background-color: #EEEEEE;">
+      <div style="padding: 20px;">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

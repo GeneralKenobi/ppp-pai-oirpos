@@ -1,0 +1,15 @@
+<h1>Find Prefix</h1>
+<form>
+  <mat-form-field appearance="fill">
+    <mat-label>Value</mat-label>
+      <input matInput [formControl]="valueFormControl" placeholder="E.g. 1230000" (change)="inputChanged()">
+    <mat-error *ngIf="valueFormControl.hasError('pattern')">Please enter a valid number</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill" style="margin-left: 10px;">
+    <mat-label>Unit</mat-label>
+      <input matInput [formControl]="unitFormControl" placeholder="(Optional) E.g. m" (change)="inputChanged()">
+  </mat-form-field>
+  <div>
+    <h3>Result: {{result}}</h3>
+  </div>
+</form>

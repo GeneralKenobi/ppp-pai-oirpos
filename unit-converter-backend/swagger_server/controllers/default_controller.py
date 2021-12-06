@@ -2,6 +2,7 @@ from src.convert_length import convert_length as convert_length_impl
 from src.convert_time import convert_time as convert_time_impl
 from src.convert_weight import convert_weight as convert_weight_impl
 from src.si_prefix import si_prefix as si_prefix_impl
+from src.server_status import status as status_impl
 from swagger_server.models.conversion_result import ConversionResult  # noqa: E501
 from swagger_server.models.server_status import ServerStatus  # noqa: E501
 from swagger_server.models.si_prefix import SiPrefix  # noqa: E501
@@ -81,4 +82,4 @@ def status():  # noqa: E501
 
     :rtype: ServerStatus
     """
-    return status()
+    return status_impl()
