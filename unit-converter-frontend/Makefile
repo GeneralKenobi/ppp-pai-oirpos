@@ -1,4 +1,4 @@
-.PHONY: run
+.PHONY: run-dev
 
 
 run-dev:
